@@ -1,0 +1,299 @@
+/* Basic CSS Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  body {
+    font-family: Arial, sans-serif;
+    background-image: url('backgroundeos.jpg'); /* Set the background image */
+    background-size: cover; /* Ensure the image covers the entire background */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+    background-attachment: fixed; /* Optional: Fix the background image in place */
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  header {
+    text-align: center;
+    margin: 20px 0;
+  }
+  header h1 {
+    font-family: 'Bubblegum Sans', cursive;
+    color: white;
+    font-size: 3.5rem; /* Increased size */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  }
+  .content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    flex: 1;
+  }
+  /* Left Column: Music Player */
+  .left-column {
+    flex: 2;
+    min-width: 300px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 6px rgba(0,0,0,0.1);
+    padding: 20px;
+  }
+  #now-playing {
+    margin-bottom: 20px;
+  }
+  .now-playing-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .now-playing-header h2 {
+    font-size: 1.5rem;
+  }
+  .karaoke-toggle label {
+    margin-right: 5px;
+    font-size: 0.9rem;
+  }
+  .song-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+  }
+  .song-info img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  .song-details h3 {
+    font-size: 1.3rem;
+    margin-bottom: 5px;
+  }
+  .song-details p {
+    color: #666;
+  }
+  .karaoke-display {
+    background: rgba(0, 123, 255, 0.1);
+    padding: 10px;
+    margin: 15px 0;
+    border-radius: 5px;
+    text-align: center;
+    min-height: 40px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    animation: pulse 1s infinite;
+  }
+  @keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+  }
+  .controls {
+    margin-top: 15px;
+  }
+  .time-display {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .time-display span {
+    font-size: 0.9rem;
+    width: 40px;
+    text-align: center;
+  }
+  input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    background: transparent;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background: #007bff;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  input[type="range"]::-webkit-slider-runnable-track {
+    background: #ddd;
+    height: 4px;
+    border-radius: 3px;
+  }
+  .playback-controls,
+  .volume-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  button {
+    cursor: pointer;
+    padding: 8px 12px;
+    background: #007bff;
+    color: #fff;
+    border-radius: 4px;
+    border: none;
+    font-size: 0.9rem;
+  }
+  button:hover {
+    background: #005bb5;
+  }
+  /* Right Column: Tabs for Playlist and Chat */
+  .right-column {
+    flex: 1;
+    min-width: 250px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 6px rgba(0,0,0,0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+  }
+  .tabs {
+    display: flex;
+    margin-bottom: 10px;
+  }
+  .tab-button {
+    flex: 1;
+    padding: 8px;
+    background: #4dace8; /* Inactive color */
+    border: 1px solid #ccc;
+    text-align: center;
+    cursor: pointer;
+    color: white; /* White text */
+    transition: background-color 0.3s;
+  }
+  .tab-button.active {
+    background: #1b7ab5; /* Active color */
+    font-weight: bold;
+  }
+  .tab-button:hover {
+    background: #1b51b5; /* Hover color */
+  }
+  .tab-content {
+    flex: 1;
+    overflow-y: auto;
+    max-height: 400px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+  }
+  /* Playlist Items */
+  .playlist-item {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+  }
+  .playlist-item:last-child {
+    border-bottom: none;
+  }
+  .playlist-item img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-right: 10px;
+  }
+  .playlist-item .info {
+    flex: 1;
+  }
+  .playlist-item .info p {
+    font-size: 0.9rem;
+    margin: 2px 0;
+  }
+  .playlist-item .time {
+    font-size: 0.8rem;
+    color: #666;
+  }
+  .playlist-item.active {
+    background: #f5f5f5;
+  }
+  /* Chat styles */
+  .chat-messages {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+  }
+  .chat-message {
+    margin: 5px 0;
+    display: flex;
+  }
+  .chat-message.user {
+    justify-content: flex-end;
+  }
+  .chat-message.system {
+    justify-content: flex-start;
+  }
+  .chat-message .bubble {
+    padding: 8px 12px;
+    border-radius: 16px;
+    max-width: 80%;
+    font-size: 0.9rem;
+  }
+  .chat-message.user .bubble {
+    background: #007bff;
+    color: #fff;
+  }
+  .chat-message.system .bubble {
+    background: #eee;
+    color: #333;
+  }
+  form#chat-form {
+    display: flex;
+    gap: 10px;
+  }
+  form#chat-form input[type="text"] {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  form#chat-form button {
+    padding: 8px 12px;
+  }
+  /* Lyrics container (scrollable list) */
+  #lyrics-container {
+    margin-top: 15px;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 4px;
+  }
+  #lyrics-container p {
+    padding: 4px 0;
+    font-size: 0.9rem;
+  }
+  #lyrics-container p.active {
+    color: #007bff;
+    font-weight: bold;
+  }
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .content {
+      flex-direction: column;
+    }
+    .left-column,
+    .right-column {
+      width: 100%;
+    }
+  }
+  
