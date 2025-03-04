@@ -174,6 +174,7 @@ const songs = [
     }
   ];
   
+  
   // ----- Helper Functions -----
   function formatTime(seconds) {
     const mins = Math.floor(seconds / 60);
@@ -283,99 +284,43 @@ const songs = [
     document.getElementById("play-pause-btn").textContent = "Play";
   }
   
-  // ----- Nova Chatbot System -----
-  const systemPrompt = `You are Nova, a friendly and knowledgeable music assistant. Your job is to help users discover music, recommend songs, and provide information about artists, genres, and more. Be witty, engaging, and helpful. When you perform an action, describe it in brackets, like *[Nova hums a tune.]*. Always respond in a concise and friendly manner.`;
+  const chatMessages = [
+    { role: "system", content: "Hi! I can help you find music based on your mood, preferences, or activities. What would you like to listen to today?" }
+  ];
   
-  // Function to add messages to chat log
-  function addMessageToChatLog(message, sender) {
-    const chatLog = document.getElementById("chat-messages");
-    const messageDiv = document.createElement("div");
-    messageDiv.classList.add(
-      "chat-message",
-      sender === "user" ? "user-message" : "nova-message"
-    );
-  
-    // Parse markdown to HTML
-    const parsedMessage = marked.parse(message);
-    messageDiv.innerHTML = parsedMessage;
-  
-    chatLog.appendChild(messageDiv);
-  
-    // Auto scroll to the bottom
-    chatLog.scrollTop = chatLog.scrollHeight;
+  function renderChat() {
+    const chatContainer = document.getElementById("chat-messages");
+    chatContainer.innerHTML = "";
+    chatMessages.forEach(msg => {
+      const msgDiv = document.createElement("div");
+      msgDiv.className = "chat-message " + msg.role;
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+      bubble.textContent = msg.content;
+      msgDiv.appendChild(bubble);
+      chatContainer.appendChild(msgDiv);
+    });
+    chatContainer.scrollTop = chatContainer.scrollHeight;
   }
   
-  // Nova's response using the API
-  async function getNovaResponse(userMessage) {
-    try {
-      const payload = {
-        model: "deepseek/deepseek-r1:free",
-        messages: [
-          {
-            role: "system",
-            content: systemPrompt
-          },
-          {
-            role: "user",
-            content: userMessage
-          }
-        ],
-        stream: false,
-      };
-  
-      const response = await fetch("/api", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-  
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status} \n ${response.statusText}`);
-      }
-  
-      const data = await response.json();
-      console.log("Success:", data);
-  
-      // Check if response is structured correctly
-      if (!data.choices || !data.choices[0] || !data.choices[0].message || !data.choices[0].message.content) {
-        throw new Error("Response structure unexpected: Missing 'choices[0].message.content'");
-      }
-  
-      return data.choices[0].message.content;
-    } catch (error) {
-      console.error("Fetch error:", error);
-      return "Nova is unable to connect to the server right now. Please try again later!";
+  function simulateChatResponse(userInput) {
+    let response = "";
+    const query = userInput.toLowerCase();
+    if (query.includes("happy") || query.includes("upbeat")) {
+      response = "I recommend some upbeat songs like 'We Are The People' by Empire of the Sun. Would you like me to play that for you?";
+    } else if (query.includes("relax") || query.includes("calm")) {
+      response = "For relaxation, 'The Wanderlust' by Metric would be perfect. Should I add it to your queue?";
+    } else if (query.includes("city") || query.includes("urban")) {
+      response = "You might enjoy 'You Are The Right One' by Sports. It has a great vibe!";
+    } else {
+      response = "Based on your preferences, I think you might enjoy 'We Are The People' by Empire of the Sun. Would you like to hear it?";
     }
+    setTimeout(() => {
+      chatMessages.push({ role: "system", content: response });
+      renderChat();
+    }, 1000);
   }
   
-  // Handle user input
-  document.getElementById("chat-form").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const input = document.getElementById("chat-input");
-    const userInput = input.value.trim();
-    if (userInput === "") return;
-  
-    addMessageToChatLog(userInput, "user");
-    const novaResponse = await getNovaResponse(userInput);
-    addMessageToChatLog(novaResponse, "nova");
-    input.value = "";
-  });
-  
-  document.getElementById("chat-input").addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-      document.getElementById("chat-form").dispatchEvent(new Event("submit"));
-    }
-  });
-  
-  // Initialize Nova's introduction
-  document.addEventListener("DOMContentLoaded", async () => {
-    const initialPrompt = `Hi! I'm Nova, your music assistant. What would you like to listen to today?`;
-    addMessageToChatLog(initialPrompt, "nova");
-  });
-  
-  // ----- Player State & Initialization -----
   let currentSongIndex = 0;
   let isPlaying = false;
   let karaokeMode = false;
@@ -383,6 +328,7 @@ const songs = [
   let volume = 80;
   let parsedLyrics = [];
   
+  // ----- Event Listeners & Initialization -----
   document.addEventListener("DOMContentLoaded", () => {
     updateSongDisplay();
     renderPlaylist();
@@ -462,4 +408,18 @@ const songs = [
         });
       });
     });
+  
+    document.getElementById("chat-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const input = document.getElementById("chat-input");
+      const message = input.value.trim();
+      if (message === "") return;
+      chatMessages.push({ role: "user", content: message });
+      renderChat();
+      input.value = "";
+      simulateChatResponse(message);
+    });
+  
+    renderChat();
   });
+  
